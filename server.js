@@ -4,7 +4,7 @@ const { Pool } = require('pg');
 const session = require('express-session');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
@@ -19,11 +19,10 @@ app.use(session({
 
 // PostgreSQL connection
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'quiz_db',
-    password: 'post',
-    port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 // Create tables and sample user
